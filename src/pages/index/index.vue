@@ -1,12 +1,8 @@
 <template>
   <div>
     <div class="home" v-if="isAuth">
-      <search-bar
-        :disabled="true"
-        @onClick="onSearchBarClick"
-        :hotSearch="hotSearch"
-      ></search-bar>
-      <HomeCard :data="homeCard" :onClick="onHomeBookClick" />
+      <search-bar :disabled="true" @onClick="onSearchBarClick" :hotSearch="hotSearch"></search-bar>
+      <HomeCard :data="homeCard" @onClick="onHomeBookClick" />
       <HomeBanner
         img="http://www.youbaobao.xyz/book/res/bg.jpg"
         title="mpvue2.0实战多端小程序上线了"
@@ -66,13 +62,13 @@
   </div>
 </template>
 <script>
-import SearchBar from "@/components/home/SearchBar";
-import ImageView from "@/components/base/ImageView";
-import HomeCard from "@/components/home/HomeCard";
-import HomeBanner from "@/components/home/HomeBanner";
-import HomBook from "@/components/home/HomeBook";
-import Auth from "@/components/base/Auth";
-import { getHomeData, recommend, freeRead, hotBook, register } from "@/api";
+import SearchBar from '@/components/home/SearchBar'
+import ImageView from '@/components/base/ImageView'
+import HomeCard from '@/components/home/HomeCard'
+import HomeBanner from '@/components/home/HomeBanner'
+import HomBook from '@/components/home/HomeBook'
+import Auth from '@/components/base/Auth'
+import { getHomeData, recommend, freeRead, hotBook, register } from '@/api'
 import {
   getSetting,
   getUserInfo,
@@ -80,20 +76,20 @@ import {
   getStorageSync,
   getUserOpenId,
   showLoading,
-  hideLoading,
-} from "@/api/webchat";
+  hideLoading
+} from '@/api/webchat'
 export default {
   data() {
     return {
       isAuth: true,
       homeCard: {},
-      hotSearch: "", //热门搜索
+      hotSearch: '', //热门搜索
       banner: {}, //banner图
       recommend: [], //为你推荐
       freeRead: [], //免费阅读
       hotBook: [], //热门图书
-      category: [], //分类
-    };
+      category: [] //分类
+    }
   },
   components: {
     SearchBar,
@@ -101,58 +97,61 @@ export default {
     HomeCard,
     HomeBanner,
     HomBook,
-    Auth,
+    Auth
   },
 
   methods: {
     recommendChange(key) {
       switch (key) {
-        case "recommend":
-          recommend().then((res) => {
-            this.recommend = res.data.data;
-          });
-          break;
-        case "freeRead":
-          freeRead().then((res) => {
-            this.freeRead = res.data.data;
-          });
-          break;
-        case "hotBook":
-          hotBook().then((res) => {
-            this.hotBook = res.data.data;
-          });
-          break;
+        case 'recommend':
+          recommend().then(res => {
+            this.recommend = res.data.data
+          })
+          break
+        case 'freeRead':
+          freeRead().then(res => {
+            this.freeRead = res.data.data
+          })
+          break
+        case 'hotBook':
+          hotBook().then(res => {
+            this.hotBook = res.data.data
+          })
+          break
         default:
-          break;
+          break
       }
     },
 
     onSearchBarClick() {
       // 跳到搜索页
       this.$router.push({
-        path: "/pages/search/main",
+        path: '/pages/search/main',
         query: {
-          hotSearch: this.hotSearch,
-        },
-      });
+          hotSearch: this.hotSearch
+        }
+      })
     },
     onBannerClick() {
-      console.log("banner");
+      console.log('banner')
     },
     onCategoryMoreClick() {},
     onMoreClick() {
-      console.log("onMoreClick");
+      console.log('onMoreClick')
     },
-    onHomeBookClick(openId) {
+    onHomeBookClick(book) {
       this.$router.push({
-        path: "/pages/detail/main",
-      });
+        path: '/pages/detail/main',
+        query: {
+          fileName: book.fileName
+        }
+      })
     },
     getHomeData(openId, userInfo) {
       getHomeData({
-        openId,
+        openId
       })
-        .then((res) => {
+        .then(res => {
           const {
             data: {
               hotSearch: { keyword },
@@ -162,72 +161,72 @@ export default {
               hotBook,
               category,
               recommend,
-              shelfCount,
-            },
-          } = res.data;
+              shelfCount
+            }
+          } = res.data
           // console.log(keyword, shelf, banner, freeRead, hotBook, category);
-          this.hotSearch = keyword;
-          this.banner = banner;
-          this.freeRead = freeRead;
-          this.recommend = recommend;
-          this.hotBook = hotBook;
-          this.category = category;
+          this.hotSearch = keyword
+          this.banner = banner
+          this.freeRead = freeRead
+          this.recommend = recommend
+          this.hotBook = hotBook
+          this.category = category
           this.homeCard = {
             bookList: shelf,
             num: shelfCount,
-            userInfo,
-          };
-          hideLoading();
+            userInfo
+          }
+          hideLoading()
         })
-        .catch((err) => {
-          hideLoading();
-          console.log("捕获异常", err);
-        });
+        .catch(err => {
+          hideLoading()
+          console.log('捕获异常', err)
+        })
     },
     getUserInfo() {
       const onOpenIdComplete = (openId, userInfo) => {
-        this.getHomeData(openId, userInfo);
-        register(openId, userInfo);
-      };
+        this.getHomeData(openId, userInfo)
+        register(openId, userInfo)
+      }
       getUserInfo(
-        (userInfo) => {
-          setStorageSync("userInfo", userInfo);
-          const openId = getStorageSync("openId");
+        userInfo => {
+          setStorageSync('userInfo', userInfo)
+          const openId = getStorageSync('openId')
           if (!openId || openId.length === 0) {
             // 请求openId
-            getUserOpenId((openId) => onOpenIdComplete(openId, userInfo));
+            getUserOpenId(openId => onOpenIdComplete(openId, userInfo))
           } else {
             //得到openId
-            onOpenIdComplete(openId, userInfo);
+            onOpenIdComplete(openId, userInfo)
           }
         },
         () => {
-          console.log("failed...."); //获取用户信息，抛出异常
+          console.log('failed....') //获取用户信息，抛出异常
         }
-      );
+      )
     },
     getSetting() {
       getSetting(
-        "userInfo",
+        'userInfo',
         () => {
-          this.isAuth = true;
-          showLoading("正在加载");
-          this.getUserInfo();
+          this.isAuth = true
+          showLoading('正在加载')
+          this.getUserInfo()
         },
         () => {
-          this.isAuth = false;
+          this.isAuth = false
         }
-      );
+      )
     },
     init() {
-      this.getSetting();
-    },
+      this.getSetting()
+    }
   },
   mounted() {
     // this.getHomeData();
-    this.init();
-  },
-};
+    this.init()
+  }
+}
 </script>
 
 <style lang="scss" scoped>

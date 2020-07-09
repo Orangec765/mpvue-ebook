@@ -17,7 +17,7 @@
             class="book-img-wrapper"
             v-for="(item,index) in bookList"
             :key="index"
-            @click="onBookClick"
+            @click="onBookClick(item)"
           >
             <ImageView :src="item.cover"></ImageView>
           </div>
@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import ImageView from "@/components/base/ImageView";
-import DiaLog from "vant-weapp/dist/dialog/dialog";
+import ImageView from '@/components/base/ImageView'
+import DiaLog from 'vant-weapp/dist/dialog/dialog'
 export default {
   components: {
     ImageView
@@ -56,40 +56,40 @@ export default {
   computed: {
     avatar() {
       return (
-        (this.data && this.data.userInfo && this.data.userInfo.avatarUrl) || ""
-      );
+        (this.data && this.data.userInfo && this.data.userInfo.avatarUrl) || ''
+      )
     },
     nickname() {
       return (
-        (this.data && this.data.userInfo && this.data.userInfo.nickName) || ""
-      );
+        (this.data && this.data.userInfo && this.data.userInfo.nickName) || ''
+      )
     },
     bookList() {
-      return (this.data && this.data.bookList) || [];
+      return (this.data && this.data.bookList) || []
     }
   },
   methods: {
     gotoShelf() {},
-    onBookClick() {
-      this.$emit("onClick");
+    onBookClick(book) {
+      this.$emit('onClick', book)
     },
     sign() {},
     onFeedBackClick() {
       DiaLog.confirm({
-        title: "反馈",
-        message: "您是否确定提交反馈信息",
-        confirmButtonText: "是",
-        cancelButtonText: "否"
+        title: '反馈',
+        message: '您是否确定提交反馈信息',
+        confirmButtonText: '是',
+        cancelButtonText: '否'
       })
         .then(() => {
-          console.log("点击是");
+          console.log('点击是')
         })
         .catch(() => {
-          console.log("点击否");
-        });
+          console.log('点击否')
+        })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
