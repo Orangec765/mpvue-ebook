@@ -77,3 +77,10 @@ export function bookShelfSave (parmas) {
   })
 }
 
+// 移出书架
+export function bookShelfremove (parmas) {
+  return get(`${API_URL}/book/shelf/remove`, {
+    shelf: JSON.stringify(parmas)
+  })
+}
+
