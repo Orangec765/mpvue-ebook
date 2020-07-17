@@ -84,3 +84,24 @@ export function bookShelfremove (parmas) {
   })
 }
 
+// 获取图书列表
+export function searchList (parmas) {
+  return get(`${API_URL}/book/search-list`, parmas)
+}
+
+// 获取图书分类v2
+export function categoryList () {
+  return get(`${API_URL}/book/category/list/v2`)
+}
+
+// 获取书架列表
+export function shelfList (parmas) {
+  return get(`${API_URL}/book/shelf/get`, parmas)
+}
+
+
+// 获取优惠加入天数
+export function userDay (parmas) {
+  return get(`${API_URL}/user/day`, parmas)
+}
+

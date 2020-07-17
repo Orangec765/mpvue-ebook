@@ -29,7 +29,7 @@
           :data="freeRead"
           mode="row"
           btn-text="换一批"
-          @onBookClick="onBookClick"
+          @onBookClick="onHomeBookClick"
           @onMoreClick="recommendChange('freeRead')"
         />
       </div>
@@ -48,13 +48,13 @@
       <div :style="{ marginTop: '23px' }">
         <HomBook
           title="分类"
-          :row="2"
+          :row="3"
           :col="2"
           :data="category"
           mode="category"
           btn-text="查看全部"
-          @onBookClick="onCategoryMoreClick"
-          @onMoreClick="onMoreClick"
+          @onBookClick="onCategoryClick"
+          @onMoreClick="onCategoryMoreClick"
         />
       </div>
     </div>
@@ -135,7 +135,23 @@ export default {
     onBannerClick() {
       console.log('banner')
     },
-    onCategoryMoreClick() {},
+    // 分类详情
+    onCategoryClick(category) {
+      this.$router.push({
+        path: '/pages/list/main',
+        query: {
+          text: category.category,
+          key: 'categoryId',
+          title: category.categoryText
+        }
+      })
+    },
+    // 查看全部
+    onCategoryMoreClick() {
+      this.$router.push({
+        path: '/pages/categoryList/main'
+      })
+    },
     onMoreClick() {
       console.log('onMoreClick')
     },

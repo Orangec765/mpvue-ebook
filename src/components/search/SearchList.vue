@@ -4,30 +4,30 @@
       icon="apps-o"
       :title="category"
       :sub-title="category"
-      @onClick="showList(category.title,'category')"
+      @onClick="showList(category,'category')"
       v-if="category"
     />
     <SearchItem
       icon="contact"
       :title="author"
       :sub-title="author"
-      @onClick="showList(author.title,'author')"
+      @onClick="showList(author,'author')"
       v-if="author"
     />
     <SearchItem
       icon="newspaper-o"
       :title="publisher"
       :sub-title="publisher"
-      @onClick="showList(publisher.title,'publisher')"
+      @onClick="showList(publisher,'publisher')"
       v-if="publisher"
     />
-    <SearchTable :data="data.book" @onClick="onBookClick" />
+    <SearchTable :data="data.book" />
   </div>
 </template>
 
 <script>
-import SearchItem from "./SearchItem";
-import SearchTable from "./SearchTable";
+import SearchItem from './SearchItem'
+import SearchTable from './SearchTable'
 export default {
   components: {
     SearchItem,
@@ -36,23 +36,23 @@ export default {
   computed: {
     category() {
       if (this.data && this.data.category && this.data.category.length > 0) {
-        return this.data.category[0].categoryText;
+        return this.data.category[0].categoryText
       } else {
-        return null;
+        return null
       }
     },
     author() {
       if (this.data && this.data.author && this.data.author.length > 0) {
-        return this.data.author[0].author;
+        return this.data.author[0].author
       } else {
-        return null;
+        return null
       }
     },
     publisher() {
       if (this.data && this.data.publisher && this.data.publisher.length > 0) {
-        return this.data.publisher[0].publisher;
+        return this.data.publisher[0].publisher
       } else {
-        return null;
+        return null
       }
     }
   },
@@ -61,13 +61,17 @@ export default {
   },
   methods: {
     showList(text, key) {
-      console.log(text, key);
-    },
-    onBookClick(book) {
-      console.log(book);
+      this.$router.push({
+        path: '/pages/list/main',
+        query: {
+          text,
+          key,
+          title: text
+        }
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

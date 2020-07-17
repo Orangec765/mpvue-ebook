@@ -22,7 +22,7 @@
             <ImageView :src="item.cover"></ImageView>
           </div>
         </div>
-        <div class="shelf-wrapper">
+        <div class="shelf-wrapper" @click="gotoShelf">
           <div class="shelf">书架</div>
           <van-icon class="arrow" size="11px" name="arrow" color="#828489"></van-icon>
         </div>
@@ -69,7 +69,11 @@ export default {
     }
   },
   methods: {
-    gotoShelf() {},
+    gotoShelf() {
+      this.$router.push({
+        path: '/pages/shelf/main'
+      })
+    },
     onBookClick(book) {
       this.$emit('onClick', book)
     },

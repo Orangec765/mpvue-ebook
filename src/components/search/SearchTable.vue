@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import ImageView from "../base/ImageView";
+import ImageView from '../base/ImageView'
 
 export default {
   components: {
@@ -34,10 +34,16 @@ export default {
   },
   methods: {
     onClick(book) {
-      this.$emit("onClick", book);
+      this.$router.push({
+        path: '/pages/detail/main',
+        query: {
+          fileName: book.fileName
+        }
+      })
+      this.$emit('onClick', book)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
